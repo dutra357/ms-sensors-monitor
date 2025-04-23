@@ -12,9 +12,9 @@ public class SensorMonitoring {
     @Id
     @EmbeddedId
     private SensorId id;
-    private Double lastTemperature;
-    private OffsetDateTime updateAt;
-    private Boolean enabled;
+    private Double lastTemperature = null;
+    private OffsetDateTime updateAt = OffsetDateTime.now();
+    private Boolean enabled = false;
 
     public SensorMonitoring() {}
     public SensorMonitoring(SensorId id, Double lastTemperature,

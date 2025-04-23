@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.Duration;
+
 
 @RestController
 @RequestMapping("/api/sensors/{sensorId}/monitoring")
@@ -29,15 +31,22 @@ public class SensorMonitoringController {
         return new OutPut(sensorById);
     }
 
-    @PutMapping("/eneable")
+    @PutMapping("/enable")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void eneable(@PathVariable TSID sensorId) {
 
         SensorMonitoring sensorById = repository.findById(new SensorId(sensorId))
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseGet(() -> {
+                    SensorMonitoring sensorMonitoring = new SensorMonitoring();
+                    sensorMonitoring.setId(new SensorId(sensorId));
+                    return sensorMonitoring;
+                });
+
+        if (Boolean.TRUE.equals(sensorById.getEnabled())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
+        }
 
         sensorById.setEnabled(true);
-
         repository.save(sensorById);
     }
 
@@ -46,10 +55,13 @@ public class SensorMonitoringController {
     public void disable(@PathVariable TSID sensorId) {
 
         SensorMonitoring sensorById = repository.findById(new SensorId(sensorId))
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseGet(() -> {
+                    SensorMonitoring sensorMonitoring = new SensorMonitoring();
+                    sensorMonitoring.setId(new SensorId(sensorId));
+                    return sensorMonitoring;
+                });
 
         sensorById.setEnabled(false);
-
         repository.save(sensorById);
     }
 }
