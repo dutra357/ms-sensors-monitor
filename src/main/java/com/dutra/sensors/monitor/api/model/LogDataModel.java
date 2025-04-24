@@ -6,23 +6,23 @@ import io.hypersistence.tsid.TSID;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-public class LogOutPut {
+public class LogDataModel {
 
     private UUID id;
     private TSID sensorId;
     private OffsetDateTime registredAt;
     private Double value;
 
-    public LogOutPut() {}
-    public LogOutPut(UUID id, TSID sensorId,
-                     OffsetDateTime registredAt, Double value) {
+    public LogDataModel() {}
+    public LogDataModel(UUID id, TSID sensorId,
+                        OffsetDateTime registredAt, Double value) {
         this.id = id;
         this.sensorId = sensorId;
         this.registredAt = registredAt;
         this.value = value;
     }
 
-    public LogOutPut(EntityLog entityLog) {
+    public LogDataModel(EntityLog entityLog) {
         this.id = entityLog.getId().getId();
         this.sensorId = entityLog.getSensorId().getTsid();
         this.registredAt = entityLog.getRegisteredAt();

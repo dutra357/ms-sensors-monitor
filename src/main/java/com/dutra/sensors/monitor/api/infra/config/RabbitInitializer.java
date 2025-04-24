@@ -1,4 +1,4 @@
-package com.dutra.sensors.monitor.api.infra;
+package com.dutra.sensors.monitor.api.infra.config;
 
 import jakarta.annotation.PostConstruct;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;

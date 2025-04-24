@@ -1,6 +1,6 @@
 package com.dutra.sensors.monitor.api.controller;
 
-import com.dutra.sensors.monitor.api.model.LogOutPut;
+import com.dutra.sensors.monitor.api.model.LogDataModel;
 import com.dutra.sensors.monitor.domain.model.EntityLog;
 import com.dutra.sensors.monitor.domain.model.SensorId;
 import com.dutra.sensors.monitor.domain.repository.EntityLogRepository;
@@ -24,8 +24,8 @@ public class EntityLogController {
     }
 
     @GetMapping
-    public Page<LogOutPut> search(@PathVariable TSID sensorId, @PageableDefault Pageable pageable) {
+    public Page<LogDataModel> search(@PathVariable TSID sensorId, @PageableDefault Pageable pageable) {
         Page<EntityLog> entityLog = repository.findBySensorId(new SensorId(sensorId), pageable);
-        return entityLog.map(LogOutPut::new);
+        return entityLog.map(LogDataModel::new);
     }
 }

@@ -23,6 +23,11 @@ dependencies {
 
 	implementation 'org.springframework.boot:spring-boot-starter-amqp:3.4.4'
 
+	// SLF4J API
+	implementation 'org.slf4j:slf4j-api:2.0.9'
+	// Logback como implementação de logging
+	implementation 'ch.qos.logback:logback-classic:1.5.13'
+
 	implementation 'com.fasterxml.uuid:java-uuid-generator:5.1.0'
 	implementation 'io.hypersistence:hypersistence-tsid:2.1.4'
 
