@@ -11,7 +11,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitConfig {
 
-    public static final String QUEUE_NAME =  "temperature-monitoring.process-temperature.v1.q";
+    public static final String QUEUE_PROCESS_TEMPERATURE =  "temperature-monitoring.process-temperature.v1.q";
+    public static final String QUEUE_ALERTING =  "temperature-monitoring.alerting.v1.q";
 
     /**
      * Bean para converter o objeto de mensagem para JSON,
@@ -29,13 +30,23 @@ public class RabbitConfig {
     }
 
     @Bean
-    public Queue queue() {
-        return QueueBuilder.durable(QUEUE_NAME).build();
+    public Queue queueProcessTemperature() {
+        return QueueBuilder.durable(QUEUE_PROCESS_TEMPERATURE).build();
     }
 
     @Bean
-    public Binding binding() {
-        return BindingBuilder.bind(queue()).to(exchange());
+    public Queue queueAlerting() {
+        return QueueBuilder.durable(QUEUE_ALERTING).build();
+    }
+
+    @Bean
+    public Binding bindingProcessTemperature() {
+        return BindingBuilder.bind(queueProcessTemperature()).to(exchange());
+    }
+
+    @Bean
+    public Binding bindingAlerting() {
+        return BindingBuilder.bind(queueAlerting()).to(exchange());
     }
 
     /**

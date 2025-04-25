@@ -19,13 +19,12 @@ public class RabbitMQListener {
     private static final Logger logger = LoggerFactory.getLogger(RabbitMQListener.class);
 
     private final TemperatureMonitoringService service;
-
     public RabbitMQListener(TemperatureMonitoringService service) {
         this.service = service;
     }
 
-    @RabbitListener(queues = RabbitConfig.QUEUE_NAME)
-    public void handleMessage(@Payload LogDataModel  message, @Headers Map<String, Object> headers) {
+    @RabbitListener(queues = RabbitConfig.QUEUE_PROCESS_TEMPERATURE, concurrency = "2-3")
+    public void handleMessageTemperature(@Payload LogDataModel  message, @Headers Map<String, Object> headers) {
 
         TSID sensorId = message.getSensorId();
         Double temperature = message.getValue();
@@ -34,5 +33,13 @@ public class RabbitMQListener {
         logger.info("Message headers: {}", headers);
 
         service.processTemperatureReading(message);
+    }
+
+    @RabbitListener(queues = RabbitConfig.QUEUE_ALERTING, concurrency = "2-3")
+    public void handleAlerting(@Payload LogDataModel  message) {
+
+        TSID sensorId = message.getSensorId();
+        Double temperature = message.getValue();
+        logger.info("Received ALERT from sensor {} with new temperature {}", sensorId, temperature);
     }
 }
